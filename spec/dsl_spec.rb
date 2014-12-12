@@ -50,7 +50,7 @@ RSpec.describe JSON::SchemaBuilder::DSL do
           def initialize(*args); end
         end
       end
-      
+
       it 'should set the parent' do
         expect(instance.class).to receive(:new)
           .with('name', parent: kind_of(klass)).and_call_original
