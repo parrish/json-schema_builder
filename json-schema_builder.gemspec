@@ -5,7 +5,7 @@ require 'json/schema_builder/version'
 
 Gem::Specification.new do |spec|
   spec.name          = 'json-schema_builder'
-  spec.version       = Json::SchemaBuilder::VERSION
+  spec.version       = JSON::SchemaBuilder::VERSION
   spec.authors       = ['Michael Parrish']
   spec.email         = ['michael@zooniverse.org']
   spec.summary       = ''

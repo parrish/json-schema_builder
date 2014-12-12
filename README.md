@@ -1,4 +1,4 @@
-# Json::SchemaBuilder
+# JSON::SchemaBuilder
 
 TODO: Write a gem description
 
