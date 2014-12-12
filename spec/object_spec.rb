@@ -10,6 +10,7 @@ RSpec.describe JSON::SchemaBuilder::Object do
   it{ is_expected.to define_attribute :properties }
   it{ is_expected.to define_attribute :additional_properties }
   it{ is_expected.to define_attribute :pattern_properties }
+  its(:registered_type){ is_expected.to eql :object }
 
   describe '#initialize' do
     subject do
@@ -22,6 +23,7 @@ RSpec.describe JSON::SchemaBuilder::Object do
     let(:string){ kind_of JSON::SchemaBuilder::String }
     its(:children){ is_expected.to include string }
     its('children.length'){ is_expected.to eql 2 }
-    its(:properties){ is_expected.to eql test1: { }, test2: { } }
+    its('properties'){ is_expected.to include test1: { 'type' => 'string' } }
+    its('properties'){ is_expected.to include test2: { 'type' => 'string' } }
   end
 end

@@ -32,7 +32,7 @@ module JSON
 
       def initialize(name, opts = { }, &block)
         @name = name
-        @type = self.class.registered_type
+        self.type = self.class.registered_type
         initialize_parent_with opts
         initialize_with opts
         eval_block &block
