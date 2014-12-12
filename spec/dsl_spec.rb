@@ -12,7 +12,8 @@ RSpec.describe JSON::SchemaBuilder::DSL do
 
   describe '.register' do
     it 'should register the class' do
-      expect(subject.types).to eql something: klass
+      expect(subject.types).to have_key :something
+      expect(subject.types[:something]).to eql klass
     end
 
     it 'should store the registered type' do
