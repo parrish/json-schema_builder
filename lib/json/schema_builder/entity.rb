@@ -1,3 +1,5 @@
+require_relative 'dsl'
+
 module JSON
   module SchemaBuilder
     class Entity
