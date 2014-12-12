@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 RSpec.describe JSON::SchemaBuilder::Entity do
-  subject{ JSON::SchemaBuilder::Entity }
+  subject{ described_class }
 
   it{ is_expected.to define_attribute :title }
   it{ is_expected.to define_attribute :description }
@@ -49,25 +49,11 @@ RSpec.describe JSON::SchemaBuilder::Entity do
   describe '#initialize' do
     include_context 'an entity with a parent'
 
-    it 'should assign the name' do
-      expect(subject.name).to eql 'name'
-    end
-
-    it 'should assign option attributes' do
-      expect(subject.title).to eql 'test'
-    end
-
-    it 'should accept a parent' do
-      expect(subject.parent).to eql parent
-    end
-
-    it 'should assign itself as a child to the parent' do
-      expect(parent.children).to include subject
-    end
-
-    it 'should evaluate a block' do
-      expect(subject.schema.evaluated_block).to be true
-    end
+    its(:name){ is_expected.to eql 'name' }
+    its(:title){ is_expected.to eql 'test' }
+    its(:parent){ is_expected.to eql parent }
+    its('schema.evaluated_block'){ is_expected.to be true }
+    its('parent.children'){ is_expected.to include subject }
   end
 
   describe '#required=' do

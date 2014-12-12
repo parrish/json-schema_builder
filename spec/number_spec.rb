@@ -1,9 +1,7 @@
 require 'spec_helper'
 
 RSpec.describe JSON::SchemaBuilder::Number do
+  subject{ described_class }
   it_behaves_like 'a numeric entity'
-
-  it 'should register' do
-    expect(JSON::SchemaBuilder::Number.registered_type).to eql :number
-  end
+  its(:registered_type){ is_expected.to eql :number }
 end

@@ -1,7 +1,6 @@
 require 'spec_helper'
 
 RSpec.describe JSON::SchemaBuilder::Boolean do
-  it 'should register' do
-    expect(JSON::SchemaBuilder::Boolean.registered_type).to eql :boolean
-  end
+  subject{ described_class }
+  its(:registered_type){ is_expected.to eql :boolean }
 end
