@@ -1,4 +1,5 @@
 require_relative 'dsl'
+require_relative 'schema'
 
 module JSON
   module SchemaBuilder
@@ -39,7 +40,7 @@ module JSON
       end
 
       def schema
-        @schema ||= OpenStruct.new
+        @schema ||= Schema.new
       end
 
       def required=(*values)
