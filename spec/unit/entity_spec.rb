@@ -44,6 +44,16 @@ RSpec.describe JSON::SchemaBuilder::Entity, type: :unit do
       subject.test_name = 1
       expect(subject.schema.testName).to eql 1
     end
+
+    it 'should handle array arguments' do
+      subject.test_list = [1, 2, 3]
+      expect(subject.schema.testList).to eql [1, 2, 3]
+    end
+
+    it 'should handle array argument lists' do
+      subject.test_list 1, 2, 3
+      expect(subject.schema.testList).to eql [1, 2, 3]
+    end
   end
 
   describe '#initialize' do
@@ -65,20 +75,6 @@ RSpec.describe JSON::SchemaBuilder::Entity, type: :unit do
       }.to change{
         parent.required
       }.to ['name']
-    end
-  end
-
-  describe '#enum=' do
-    include_context 'an entity with a parent'
-
-    it 'should accept an array' do
-      subject.enum = [:string]
-      expect(subject.enum).to eql [:string]
-    end
-
-    it 'should accept an argument list' do
-      subject.method(:enum=).call :string, :null
-      expect(subject.enum).to eql [:string, :null]
     end
   end
 

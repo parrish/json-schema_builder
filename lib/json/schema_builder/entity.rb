@@ -8,10 +8,11 @@ module JSON
       class_attribute :registered_type
       attr_accessor :name, :parent
 
-      def self.attribute(name)
+      def self.attribute(name, array: false)
         as_name = name.to_s.underscore.gsub(/_(\w)/){ $1.upcase }
-        define_method name do |value = nil|
-          if value.nil?
+        define_method name do |*values|
+          value = array ? values.flatten : values.first
+          if (array && value.empty?) || value.nil?
             self.schema[as_name]
           else
             self.schema[as_name] = value
@@ -24,10 +25,10 @@ module JSON
       attribute :description
 
       attribute :type
-      attribute :enum
-      attribute :all_of
-      attribute :any_of
-      attribute :one_of
+      attribute :enum, array: true
+      attribute :all_of, array: true
+      attribute :any_of, array: true
+      attribute :one_of, array: true
       attribute :not
       attribute :definitions
 

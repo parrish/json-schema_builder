@@ -5,6 +5,7 @@ RSpec.shared_context 'an entity' do
     Class.new JSON::SchemaBuilder::Entity do
       attribute :test
       attribute :test_name
+      attribute :test_list, array: true
       def initialize(*args); end
     end
   end
