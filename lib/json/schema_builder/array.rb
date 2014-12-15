@@ -9,8 +9,10 @@ module JSON
       attribute :max_items
       attribute :unique_items
 
-      def items(opts = { }, &block)
-        schema.items = items_entity(opts, &block).as_json
+      def items(*args, &block)
+        opts = args.extract_options!
+        schema.items = args.first
+        schema.items ||= items_entity(opts, &block).as_json
       end
 
       protected

@@ -6,4 +6,5 @@ end
 require 'rspec/its'
 RSpec.configure do |config|
   config.disable_monkey_patching!
+  config.include IntegrationHelper, type: :integration
 end
