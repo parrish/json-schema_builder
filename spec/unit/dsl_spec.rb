@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-RSpec.describe JSON::SchemaBuilder::DSL do
+RSpec.describe JSON::SchemaBuilder::DSL, type: :unit do
   let!(:klass) do
     Class.new do
       include JSON::SchemaBuilder::DSL

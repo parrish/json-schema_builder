@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-RSpec.describe JSON::SchemaBuilder::Entity do
+RSpec.describe JSON::SchemaBuilder::Entity, type: :unit do
   subject{ described_class }
 
   it{ is_expected.to define_attribute :title }

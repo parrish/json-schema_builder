@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-RSpec.describe JSON::SchemaBuilder::String do
+RSpec.describe JSON::SchemaBuilder::String, type: :unit do
   subject{ described_class }
 
   it{ is_expected.to define_attribute :min_length }

@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-RSpec.describe JSON::SchemaBuilder::ContainerEntity do
+RSpec.describe JSON::SchemaBuilder::ContainerEntity, type: :unit do
   subject{ described_class.new nil }
   it{ is_expected.to be_a JSON::SchemaBuilder::Entity }
 

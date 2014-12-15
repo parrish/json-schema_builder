@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-RSpec.describe JSON::SchemaBuilder::Schema do
+RSpec.describe JSON::SchemaBuilder::Schema, type: :unit do
   let(:schema){ described_class.new a: 1, b: { c: 3 } }
   let(:other){ described_class.new a: 2, b: { d: 4 } }
   it{ is_expected.to be_a OpenStruct }
