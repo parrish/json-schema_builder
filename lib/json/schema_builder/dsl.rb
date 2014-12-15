@@ -4,9 +4,22 @@ module JSON
       extend ActiveSupport::Concern
       mattr_accessor :types
 
-      def entity(type, name, opts = { }, &block)
+      def entity(*args, &block)
+        opts = args.extract_options!
+        klass, name = klass_and_name_from args
         opts[:parent] ||= self if is_a?(Entity)
-        DSL.types[type].new name, opts, &block
+        klass.new name, opts, &block
+      end
+
+      protected
+
+      def klass_and_name_from(args)
+        type, name = args
+        if DSL.types[type]
+          [DSL.types[type], name]
+        else
+          [Entity, type]
+        end
       end
 
       module ClassMethods
