@@ -4,10 +4,6 @@ module JSON
       extend ActiveSupport::Concern
       mattr_accessor :types
 
-      included do
-        class_attribute :registered_type
-      end
-
       def entity(type, name, opts = { }, &block)
         opts[:parent] ||= self if is_a?(Entity)
         DSL.types[type].new name, opts, &block

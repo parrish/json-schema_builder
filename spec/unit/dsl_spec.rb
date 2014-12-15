@@ -4,6 +4,7 @@ RSpec.describe JSON::SchemaBuilder::DSL, type: :unit do
   let!(:klass) do
     Class.new do
       include JSON::SchemaBuilder::DSL
+      class_attribute :registered_type
       register :something
       def initialize(*args); end
     end
