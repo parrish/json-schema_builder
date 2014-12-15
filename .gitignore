@@ -1,3 +1,4 @@
 /.bundle/
 /pkg
+/coverage
 .DS_Store
