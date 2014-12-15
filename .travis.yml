@@ -1,5 +1,5 @@
 language: ruby
-script: rspec
+script: bundle exec rspec
 rvm:
 - 2.1.5
 addons:
