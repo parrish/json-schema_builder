@@ -18,6 +18,19 @@ module JSON
           self.properties[child.name] = child.as_json
         end
       end
+
+      def required(*values)
+        case values
+        when []
+          @schema.required
+        when [true]
+          @parent.required ||= []
+          @parent.required << @name
+        else
+          @schema.required = values.flatten
+        end
+      end
+      alias_method :required=, :required
     end
   end
 end
