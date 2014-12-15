@@ -9,6 +9,12 @@ module JSON
         @children = []
         super
       end
+
+      def merge_children!
+        children.each do |child|
+          schema.merge! child.schema
+        end
+      end
     end
   end
 end
