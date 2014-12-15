@@ -8,9 +8,9 @@ Gem::Specification.new do |spec|
   spec.version       = JSON::SchemaBuilder::VERSION
   spec.authors       = ['Michael Parrish']
   spec.email         = ['michael@zooniverse.org']
-  spec.summary       = ''
-  spec.description   = ''
-  spec.homepage      = ''
+  spec.summary       = 'Build JSON schemas with Ruby'
+  spec.description   = 'Build JSON schemas with Ruby'
+  spec.homepage      = 'https://github.com/parrish/json-schema_builder'
   spec.license       = 'MIT'
 
   spec.files         = `git ls-files -z`.split "\x0"
