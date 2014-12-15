@@ -26,8 +26,13 @@ RSpec.describe JSON::SchemaBuilder::DSL do
       end
 
       it 'should dispatch to entity' do
-        expect(instance).to receive(:entity).with(:something, 1, 2).and_call_original
-        instance.something 1, 2
+        expect(instance).to receive(:entity).with(:something, 1, foo: :bar).and_call_original
+        instance.something 1, foo: :bar
+      end
+
+      it 'should allow unnamed entities' do
+        expect(instance).to receive(:entity).with(:something, nil, foo: :bar).and_call_original
+        instance.something foo: :bar
       end
     end
   end

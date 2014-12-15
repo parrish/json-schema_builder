@@ -20,7 +20,9 @@ module JSON
           DSL.types[type] = self
 
           DSL.module_eval do
-            define_method type do |name = nil, opts = { }, &block|
+            define_method type do |*args, &block|
+              opts = args.extract_options!
+              name = args.first
               entity type, name, opts, &block
             end
           end
