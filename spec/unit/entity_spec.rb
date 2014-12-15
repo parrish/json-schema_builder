@@ -68,6 +68,20 @@ RSpec.describe JSON::SchemaBuilder::Entity, type: :unit do
     end
   end
 
+  describe '#enum=' do
+    include_context 'an entity with a parent'
+
+    it 'should accept an array' do
+      subject.enum = [:string]
+      expect(subject.enum).to eql [:string]
+    end
+
+    it 'should accept an argument list' do
+      subject.method(:enum=).call :string, :null
+      expect(subject.enum).to eql [:string, :null]
+    end
+  end
+
   describe '#as_json' do
     include_context 'an entity'
 

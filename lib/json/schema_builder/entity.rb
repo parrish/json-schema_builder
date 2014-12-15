@@ -48,6 +48,10 @@ module JSON
         @parent.required << @name
       end
 
+      def enum=(*values)
+        @schema.enum = values.flatten
+      end
+
       def as_json
         schema.to_h.as_json
       end
