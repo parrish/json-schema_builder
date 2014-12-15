@@ -1,6 +1,10 @@
 # JSON::SchemaBuilder
 
-TODO: Write a gem description
+[![Code Climate](https://codeclimate.com/github/parrish/json-schema_builder/badges/gpa.svg)](https://codeclimate.com/github/parrish/json-schema_builder)
+[![Test Coverage](https://codeclimate.com/github/parrish/json-schema_builder/badges/coverage.svg)](https://codeclimate.com/github/parrish/json-schema_builder)
+[![Gem Version](https://badge.fury.io/rb/json-schema_builder.svg)](http://badge.fury.io/rb/json-schema_builder)
+
+Build JSON schemas with Ruby
 
 ## Installation
 
