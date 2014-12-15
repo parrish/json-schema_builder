@@ -10,7 +10,7 @@ RSpec.describe JSON::SchemaBuilder::Entity, type: :unit do
   it{ is_expected.to define_attribute :all_of }
   it{ is_expected.to define_attribute :any_of }
   it{ is_expected.to define_attribute :one_of }
-  it{ is_expected.to define_attribute :not }
+  it{ is_expected.to define_attribute :not_a }
   it{ is_expected.to define_attribute :definitions }
 
   describe '.attribute' do
@@ -53,6 +53,17 @@ RSpec.describe JSON::SchemaBuilder::Entity, type: :unit do
     it 'should handle array argument lists' do
       subject.test_list 1, 2, 3
       expect(subject.schema.testList).to eql [1, 2, 3]
+    end
+
+    it 'should handle arbitrary key writes' do
+      subject.test_as 1
+      expect(subject.schema.testAs).to be_nil
+      expect(subject.schema.testOther).to eql 1
+    end
+
+    it 'should handle arbitrary key reads' do
+      subject.schema.testOther = 1
+      expect(subject.test_as).to eql 1
     end
   end
 

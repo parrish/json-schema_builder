@@ -8,8 +8,8 @@ module JSON
       class_attribute :registered_type
       attr_accessor :name, :parent
 
-      def self.attribute(name, array: false)
-        as_name = name.to_s.underscore.gsub(/_(\w)/){ $1.upcase }
+      def self.attribute(name, as: nil, array: false)
+        as_name = as || name.to_s.underscore.gsub(/_(\w)/){ $1.upcase }
         define_method name do |*values|
           value = array ? values.flatten : values.first
           if (array && value.empty?) || value.nil?
@@ -29,7 +29,7 @@ module JSON
       attribute :all_of, array: true
       attribute :any_of, array: true
       attribute :one_of, array: true
-      attribute :not
+      attribute :not_a, as: :not
       attribute :definitions
 
       def initialize(name, opts = { }, &block)

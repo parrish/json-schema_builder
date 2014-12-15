@@ -6,6 +6,7 @@ RSpec.shared_context 'an entity' do
       attribute :test
       attribute :test_name
       attribute :test_list, array: true
+      attribute :test_as, as: :testOther
       def initialize(*args); end
     end
   end
