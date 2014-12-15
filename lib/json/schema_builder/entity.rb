@@ -60,6 +60,22 @@ module JSON
         schema.to_h.as_json
       end
 
+      def respond_to?(method_name, include_all = false)
+        if @parent_context
+          @parent_context.respond_to? method_name, include_all
+        else
+          super
+        end
+      end
+
+      def method_missing(method_name, *args, &block)
+        if @parent_context && respond_to?(method_name, true)
+          @parent_context.send method_name, *args, &block
+        else
+          super
+        end
+      end
+
       protected
 
       def initialize_parent_with(opts)
@@ -75,7 +91,10 @@ module JSON
       end
 
       def eval_block(&block)
-        instance_exec(self, &block) if block_given?
+        if block_given?
+          @parent_context = block.binding.eval 'self'
+          instance_exec self, &block
+        end
       end
     end
   end
