@@ -3,6 +3,9 @@ require 'pry'
   Dir["./#{ path }/**/*.rb"].sort.each{ |file| require file }
 end
 
+require 'codeclimate-test-reporter'
+CodeClimate::TestReporter.start
+
 require 'rspec/its'
 RSpec.configure do |config|
   config.disable_monkey_patching!

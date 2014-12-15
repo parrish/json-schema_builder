@@ -22,6 +22,7 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'rake', '~> 10.0'
   spec.add_development_dependency 'rspec', '~> 3.1'
   spec.add_development_dependency 'rspec-its'
+  spec.add_development_dependency 'codeclimate-test-reporter'
   spec.add_development_dependency 'pry'
   spec.add_dependency 'activesupport', '~> 4.0', '4.2.0.rc2'
 end
