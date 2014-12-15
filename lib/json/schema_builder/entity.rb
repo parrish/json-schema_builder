@@ -6,7 +6,7 @@ module JSON
     class Entity
       include DSL
       class_attribute :registered_type
-      attr_accessor :name, :parent
+      attr_accessor :name, :parent, :children
 
       def self.attribute(name, as: nil, array: false)
         as_name = as || name.to_s.underscore.gsub(/_(\w)/){ $1.upcase }
@@ -34,6 +34,7 @@ module JSON
 
       def initialize(name, opts = { }, &block)
         @name = name
+        @children = []
         self.type = self.class.registered_type
         initialize_parent_with opts
         initialize_with opts
@@ -47,6 +48,12 @@ module JSON
       def required=(*values)
         @parent.required ||= []
         @parent.required << @name
+      end
+
+      def merge_children!
+        children.each do |child|
+          schema.merge! child.schema
+        end
       end
 
       def as_json

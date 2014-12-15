@@ -1,8 +1,8 @@
-require_relative 'container_entity'
+require_relative 'entity'
 
 module JSON
   module SchemaBuilder
-    class Object < ContainerEntity
+    class Object < Entity
       register :object
       attribute :required
       attribute :min_properties

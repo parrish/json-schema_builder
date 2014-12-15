@@ -89,6 +89,20 @@ RSpec.describe JSON::SchemaBuilder::Entity, type: :unit do
     end
   end
 
+  describe '#merge_children!' do
+    include_context 'an entity with a parent'
+
+    let(:child_schema){ double 'JSON::SchemaBuilder::Schema' }
+    let(:child){ double 'JSON::SchemaBuilder::Entity', schema: child_schema }
+
+    it 'should merge children schemas' do
+      expect(child).to receive :schema
+      expect(subject).to receive(:children).and_return [child]
+      expect(subject.schema).to receive(:merge!).with child_schema
+      subject.merge_children!
+    end
+  end
+
   describe '#as_json' do
     include_context 'an entity'
 

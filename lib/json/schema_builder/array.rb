@@ -1,8 +1,8 @@
-require_relative 'container_entity'
+require_relative 'entity'
 
 module JSON
   module SchemaBuilder
-    class Array < ContainerEntity
+    class Array < Entity
       register :array
       attribute :additional_items
       attribute :min_items
@@ -21,7 +21,7 @@ module JSON
         if opts[:type]
           send opts.delete(:type), opts, &block
         else
-          ContainerEntity.new(nil, opts, &block).tap &:merge_children!
+          Entity.new(nil, opts, &block).tap &:merge_children!
         end
       end
     end

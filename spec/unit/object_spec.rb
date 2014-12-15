@@ -2,7 +2,6 @@ require 'spec_helper'
 
 RSpec.describe JSON::SchemaBuilder::Object, type: :unit do
   subject{ described_class }
-  it_behaves_like 'a container entity'
 
   it{ is_expected.to define_attribute :required }
   it{ is_expected.to define_attribute :min_properties }
