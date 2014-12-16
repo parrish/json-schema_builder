@@ -94,6 +94,18 @@ RSpec.describe JSON::SchemaBuilder::Entity, type: :unit do
     end
   end
 
+  %w(validate validate! fully_validate).each do |validator|
+    describe "##{ validator }" do
+      include_context 'an entity'
+      let(:data){ { } }
+
+      it "should #{ validator }" do
+        expect(JSON::Validator).to receive(validator).with subject.as_json, data, opts: true
+        subject.send validator, data, opts: true
+      end
+    end
+  end
+
   describe '#merge_children!' do
     include_context 'an entity with a parent'
 

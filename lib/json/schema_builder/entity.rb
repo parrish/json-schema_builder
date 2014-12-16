@@ -1,12 +1,14 @@
 require_relative 'dsl'
 require_relative 'schema'
 require_relative 'attribute'
+require_relative 'validation'
 
 module JSON
   module SchemaBuilder
     class Entity
       include DSL
       include Attribute
+      include Validation
       class_attribute :registered_type
       attr_accessor :name, :parent, :children
 
