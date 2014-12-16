@@ -15,16 +15,16 @@ module JSON
           end
           alias_method "#{ name }=", name
         end
-        
+
         protected
-        
+
         def snakeize(str)
           str.to_s.underscore.gsub(/_(\w)/){ $1.upcase }
         end
       end
-      
+
       protected
-      
+
       def _array_attr(attr, values)
         if values.empty?
           self.schema[attr]
@@ -32,7 +32,7 @@ module JSON
           self.schema[attr] = values
         end
       end
-      
+
       def _attr(attr, value)
         if value.nil?
           self.schema[attr]
