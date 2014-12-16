@@ -1,3 +1,4 @@
+require 'pry'
 require 'simplecov'
 SimpleCov.configure do
   add_filter '/spec'
@@ -9,7 +10,6 @@ SimpleCov.start
   Dir["./#{ path }/**/*.rb"].sort.each{ |file| require file }
 end
 
-require 'pry'
 require 'rspec/its'
 RSpec.configure do |config|
   config.disable_monkey_patching!
