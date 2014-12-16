@@ -12,6 +12,7 @@ RSpec.describe JSON::SchemaBuilder::Entity, type: :unit do
   it{ is_expected.to define_attribute :any_of }
   it{ is_expected.to define_attribute :one_of }
   it{ is_expected.to define_attribute :not_a }
+  it{ is_expected.to define_attribute :ref }
   it{ is_expected.to define_attribute :definitions }
 
   describe '.attribute' do

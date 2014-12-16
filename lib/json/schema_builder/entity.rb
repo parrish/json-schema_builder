@@ -22,6 +22,7 @@ module JSON
       attribute :any_of, array: true
       attribute :one_of, array: true
       attribute :not_a, as: :not
+      attribute :ref, as: :$ref
       attribute :definitions
 
       def initialize(name, opts = { }, &block)
