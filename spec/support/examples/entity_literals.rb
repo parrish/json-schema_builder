@@ -26,6 +26,14 @@ module Examples
       end
     end
 
+    def bad_example
+      object do
+        entity 'bad' do
+          not_a undefined_method
+        end
+      end
+    end
+
     def positive_int
       integer minimum: 1
     end

@@ -37,4 +37,10 @@ RSpec.describe Examples::EntityLiterals, type: :integration do
       }
     end
   end
+
+  it 'should raise through missing methods' do
+    expect {
+      described_class.new.bad_example
+    }.to raise_error NameError
+  end
 end
