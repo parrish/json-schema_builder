@@ -1,6 +1,7 @@
 module IntegrationHelper
   extend RSpec::SharedContext
-  let(:schema){ described_class.new.example }
+  let(:schema_context){ { } }
+  let(:schema){ described_class.new(schema_context).example }
   let(:json){ schema.as_json }
   let(:expected_json){ { } }
 
