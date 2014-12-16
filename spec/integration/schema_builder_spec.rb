@@ -18,26 +18,44 @@ RSpec.describe Examples::SchemaBuilder, type: :integration do
   end
 
   describe 'Configuration' do
+    subject{ Examples::SchemaBuilder }
+
+    describe '.options=' do
+      before(:each){ subject.options = { a: 1 } }
+      after(:each){ subject.configure }
+
+      its(:options){ is_expected.to be_a OpenStruct }
+      its('options.to_h'){ is_expected.to eql a: 1 }
+    end
+
     describe '.configure' do
-      subject{ Examples::SchemaBuilder }
+      before(:each) do
+        subject.configure{ |opts| opts.validate_schema = true }
+      end
+
       its(:options){ is_expected.to be_a OpenStruct }
       its('options.to_h'){ is_expected.to eql validate_schema: true }
 
       context 'with default options' do
-        after(:all){ JSON::SchemaBuilder.configure }
-        before(:all) do
+        after(:each){ subject.configure }
+        before(:each) do
           JSON::SchemaBuilder.configure do |opts|
             opts.insert_defaults = true
             opts.validate_schema = false
           end
 
-          Examples::SchemaBuilder.configure do |opts|
+          subject.configure do |opts|
             opts.validate_schema = true
           end
         end
 
         its('options.insert_defaults'){ is_expected.to be true }
         its('options.validate_schema'){ is_expected.to be true }
+      end
+
+      it 'should reset configuration first' do
+        subject.configure
+        expect(subject.options.validate_schema).to be nil
       end
     end
   end
