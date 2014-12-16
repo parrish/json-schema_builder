@@ -6,6 +6,7 @@ RSpec.describe JSON::SchemaBuilder::Entity, type: :unit do
   it{ is_expected.to define_attribute :title }
   it{ is_expected.to define_attribute :description }
   it{ is_expected.to define_attribute :type }
+  it{ is_expected.to define_attribute :default }
   it{ is_expected.to define_attribute :enum }
   it{ is_expected.to define_attribute :all_of }
   it{ is_expected.to define_attribute :any_of }

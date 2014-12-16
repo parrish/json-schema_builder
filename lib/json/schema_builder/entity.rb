@@ -16,6 +16,7 @@ module JSON
       attribute :description
 
       attribute :type
+      attribute :default
       attribute :enum, array: true
       attribute :all_of, array: true
       attribute :any_of, array: true
