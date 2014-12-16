@@ -42,7 +42,7 @@ RSpec.describe JSON::SchemaBuilder::DSL, type: :unit do
     context 'without an entity' do
       it 'should create the type' do
         expect(instance.class).to receive(:new)
-          .with('name', { }).and_call_original
+          .with('name', { root: instance.class }).and_call_original
 
         entity = instance.entity :something, 'name'
         expect(entity).to be_a klass

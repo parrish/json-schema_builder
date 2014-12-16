@@ -10,7 +10,7 @@ module JSON
       include Attribute
       include Validation
       class_attribute :registered_type
-      attr_accessor :name, :parent, :children
+      attr_accessor :name, :parent, :children, :options
 
       attribute :title
       attribute :description
@@ -75,6 +75,7 @@ module JSON
       end
 
       def initialize_with(opts)
+        @options = opts.delete(:root).class.options.to_h if opts[:root]
         opts.each_pair do |key, value|
           next if value.nil?
           send :"#{ key }=", value

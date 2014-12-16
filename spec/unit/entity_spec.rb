@@ -96,12 +96,22 @@ RSpec.describe JSON::SchemaBuilder::Entity, type: :unit do
 
   %w(validate validate! fully_validate).each do |validator|
     describe "##{ validator }" do
-      include_context 'an entity'
-      let(:data){ { } }
+      let(:klass) do
+        Class.new do
+          include JSON::SchemaBuilder
+          configure{ |opts| opts.working = true }
+
+          def example
+            object{ string :name }
+          end
+        end
+      end
+      subject{ klass.new.example }
 
       it "should #{ validator }" do
-        expect(JSON::Validator).to receive(validator).with subject.as_json, data, opts: true
-        subject.send validator, data, opts: true
+        expect(JSON::Validator).to receive(validator)
+          .with subject.as_json, { }, working: true, opts: true
+        subject.send validator, { }, opts: true
       end
     end
   end

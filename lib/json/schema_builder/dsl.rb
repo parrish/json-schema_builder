@@ -7,11 +7,19 @@ module JSON
       def entity(*args, &block)
         opts = args.extract_options!
         klass, name = klass_and_name_from args
-        opts[:parent] ||= self if is_a?(Entity)
+        set_context_for opts
         klass.new name, opts, &block
       end
 
       protected
+
+      def set_context_for(opts)
+        if is_a?(Entity)
+          opts[:parent] ||= self
+        else
+          opts[:root] = self
+        end
+      end
 
       def klass_and_name_from(args)
         type, name = args

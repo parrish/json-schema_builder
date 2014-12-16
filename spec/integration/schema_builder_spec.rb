@@ -19,10 +19,13 @@ RSpec.describe Examples::SchemaBuilder, type: :integration do
 
   describe 'Configuration' do
     subject{ Examples::SchemaBuilder }
+    after(:all) do
+      JSON::SchemaBuilder.configure
+      Examples::SchemaBuilder.configure
+    end
 
     describe '.options=' do
       before(:each){ subject.options = { a: 1 } }
-      after(:each){ subject.configure }
 
       its(:options){ is_expected.to be_a OpenStruct }
       its('options.to_h'){ is_expected.to eql a: 1 }
@@ -56,6 +59,16 @@ RSpec.describe Examples::SchemaBuilder, type: :integration do
       it 'should reset configuration first' do
         subject.configure
         expect(subject.options.validate_schema).to be nil
+      end
+
+      it 'should pass options to root entities' do
+        entity = subject.new.example
+        expect(entity.options).to eql validate_schema: true
+      end
+
+      it 'should not pass options to child entities' do
+        entity = subject.new.example.children.first
+        expect(entity.options).to be nil
       end
     end
   end
