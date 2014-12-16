@@ -1,25 +1,14 @@
 require_relative 'dsl'
 require_relative 'schema'
+require_relative 'attribute'
 
 module JSON
   module SchemaBuilder
     class Entity
       include DSL
+      include Attribute
       class_attribute :registered_type
       attr_accessor :name, :parent, :children
-
-      def self.attribute(name, as: nil, array: false)
-        as_name = as || name.to_s.underscore.gsub(/_(\w)/){ $1.upcase }
-        define_method name do |*values|
-          value = array ? values.flatten : values.first
-          if (array && value.empty?) || value.nil?
-            self.schema[as_name]
-          else
-            self.schema[as_name] = value
-          end
-        end
-        alias_method "#{ name }=", name
-      end
 
       attribute :title
       attribute :description
