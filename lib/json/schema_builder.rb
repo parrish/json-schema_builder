@@ -21,5 +21,11 @@ module JSON
     def self.default_options
       @options || { }
     end
+
+    def initialize(context = { })
+      context.each_pair do |key, value|
+        instance_variable_set "@#{ key }", value
+      end
+    end
   end
 end

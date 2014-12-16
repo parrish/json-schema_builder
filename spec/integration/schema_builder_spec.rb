@@ -17,6 +17,13 @@ RSpec.describe Examples::SchemaBuilder, type: :integration do
     end
   end
 
+  describe '#initialize' do
+    it 'should assign context' do
+      instance = Examples::SchemaBuilder.new a: 1, b: 2
+      expect(instance.as_json).to eql 'a' => 1, 'b' => 2
+    end
+  end
+
   describe 'Configuration' do
     subject{ Examples::SchemaBuilder }
     after(:all) do
