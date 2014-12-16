@@ -45,7 +45,12 @@ RSpec.describe JSON::SchemaBuilder::Entity, type: :unit do
       expect(subject.schema.testName).to eql 1
     end
 
-    it 'should handle array arguments' do
+    it 'should handle array argument reads' do
+      subject.schema.testList = [1, 2, 3]
+      expect(subject.test_list).to eql [1, 2, 3]
+    end
+
+    it 'should handle array argument writes' do
       subject.test_list = [1, 2, 3]
       expect(subject.schema.testList).to eql [1, 2, 3]
     end
