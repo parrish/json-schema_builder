@@ -16,6 +16,9 @@ module JSON
 
     included do |klass|
       extend JSON::SchemaBuilder::Configuration
+      class << self
+        attr_accessor :root_key
+      end
     end
 
     def self.default_options
@@ -25,6 +28,19 @@ module JSON
     def initialize(context = { })
       context.each_pair do |key, value|
         instance_variable_set "@#{ key }", value
+      end
+    end
+
+    def root(key = nil, &block)
+      root_key = key || self.class.root_key.to_sym
+      object do
+        object root_key, required: true, &block
+      end
+    end
+
+    module ClassMethods
+      def root(key)
+        @root_key = key
       end
     end
   end
