@@ -1,6 +1,7 @@
 require 'pry'
 require 'simplecov'
 SimpleCov.configure do
+  add_filter '/lib/json/schema_builder/rspec_helper'
   add_filter '/spec'
 end
 
