@@ -1,11 +1,6 @@
 require 'pry'
-require 'simplecov'
-SimpleCov.configure do
-  add_filter '/lib/json/schema_builder/rspec_helper'
-  add_filter '/spec'
-end
-
-SimpleCov.start
+require 'codeclimate-test-reporter'
+CodeClimate::TestReporter.start
 
 %w(lib spec/support).each do |path|
   Dir["./#{ path }/**/*.rb"].sort.each{ |file| require file }
