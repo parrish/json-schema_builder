@@ -2,6 +2,7 @@ require_relative 'dsl'
 require_relative 'schema'
 require_relative 'attribute'
 require_relative 'validation'
+require_relative 'helpers'
 
 module JSON
   module SchemaBuilder
@@ -9,6 +10,7 @@ module JSON
       include DSL
       include Attribute
       include Validation
+      include Helpers
       class_attribute :registered_type
       attr_accessor :name, :parent, :children, :options
 
