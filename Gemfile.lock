@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    json-schema_builder (0.0.6)
+    json-schema_builder (0.0.7)
       activesupport (~> 4.0)
       json-schema (~> 2.5)
 

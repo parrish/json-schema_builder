@@ -6,6 +6,23 @@ module JSON
       let(:schema_context){ { } }
       let(:schema){ described_class.new(schema_context).send schema_method }
       let(:json){ schema.as_json }
+      let(:id_schema) do
+        {
+          oneOf: [
+            { type: 'integer', minimum: 1 },
+            { type: 'string', pattern: '^[1-9]\d*$' }
+          ]
+        }
+      end
+      let(:nullable_id_schema) do
+        {
+          oneOf: [
+            { type: 'integer', minimum: 1 },
+            { type: 'string', pattern: '^[1-9]\d*$' },
+            { type: 'null' }
+          ]
+        }
+      end
       subject{ DeepOpenStruct.new json }
 
       def self.included(klass)
