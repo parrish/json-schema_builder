@@ -7,6 +7,7 @@ module JSON
       attribute :min_length
       attribute :max_length
       attribute :pattern
+      attribute :format
     end
   end
 end
