@@ -18,12 +18,12 @@ Gem::Specification.new do |spec|
   spec.test_files    = spec.files.grep(%r{^spec/})
   spec.require_paths = ['lib']
 
-  spec.add_development_dependency 'bundler', '~> 1.7'
-  spec.add_development_dependency 'rake', '~> 10.0'
-  spec.add_development_dependency 'rspec', '~> 3.1'
+  spec.add_development_dependency 'bundler', '>= 1.7'
+  spec.add_development_dependency 'rake', '>= 10.0'
+  spec.add_development_dependency 'rspec', '~> 3.4'
   spec.add_development_dependency 'rspec-its'
   spec.add_development_dependency 'codeclimate-test-reporter'
   spec.add_development_dependency 'pry'
-  spec.add_dependency 'activesupport', '~> 4.0'
+  spec.add_dependency 'activesupport', '>= 4.0'
   spec.add_dependency 'json-schema', '~> 2.5'
 end
