@@ -4,7 +4,7 @@ require 'json/schema_builder/dsl'
 require 'json/schema_builder/version'
 require 'json/schema_builder/configuration'
 
-%w(array boolean integer null number object string).each do |type|
+%w(any array boolean integer null number object string).each do |type|
   require "json/schema_builder/#{ type }"
 end
 
