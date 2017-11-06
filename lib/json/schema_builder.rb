@@ -12,6 +12,7 @@ module JSON
   module SchemaBuilder
     extend ActiveSupport::Concern
     include DSL
+    include Helpers
     extend JSON::SchemaBuilder::Configuration
 
     included do |klass|
