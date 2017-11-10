@@ -18,7 +18,7 @@ RSpec.shared_context 'an entity with a parent' do
   let(:parent){ OpenStruct.new children: [], required: [] }
   subject do
     JSON::SchemaBuilder::Entity.new 'name', title: 'test', parent: parent do
-      schema.evaluated_block = true
+      schema[:evaluated_block] = true
     end
   end
 end

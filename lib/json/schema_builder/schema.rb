@@ -1,14 +1,19 @@
-require 'ostruct'
-
 module JSON
   module SchemaBuilder
-    class Schema < OpenStruct
+    class Schema
+      attr_reader :data
+      delegate :[], :[]=, :to_h, :as_json, to: :data
+
+      def initialize(hash = {})
+        @data = hash.with_indifferent_access
+      end
+
       def merge(schema)
-        self.class.new to_h.deep_stringify_keys.deep_merge(schema.to_h.deep_stringify_keys)
+        self.class.new data.deep_merge(schema.data)
       end
 
       def merge!(schema)
-        @table = to_h.deep_stringify_keys.deep_merge schema.to_h.deep_stringify_keys
+        @data = data.deep_merge schema.data
         self
       end
     end

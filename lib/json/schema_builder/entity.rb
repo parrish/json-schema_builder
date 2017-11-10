@@ -52,7 +52,7 @@ module JSON
       end
 
       def as_json
-        schema.to_h.as_json
+        schema.as_json
       end
 
       def respond_to?(method_name, include_all = false)

@@ -22,12 +22,12 @@ module JSON
       def required(*values)
         case values
         when []
-          @schema.required
+          @schema[:required]
         when [true]
           @parent.required ||= []
           @parent.required << @name
         else
-          @schema.required = values.flatten
+          @schema[:required] = values.flatten
         end
       end
       alias_method :required=, :required

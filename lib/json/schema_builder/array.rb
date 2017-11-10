@@ -11,8 +11,8 @@ module JSON
 
       def items(*args, &block)
         opts = args.extract_options!
-        schema.items = args.first
-        schema.items ||= items_entity(opts, &block).as_json
+        schema[:items] = args.first
+        schema[:items] ||= items_entity(opts, &block).as_json
       end
 
       protected
