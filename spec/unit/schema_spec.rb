@@ -1,8 +1,33 @@
 require 'spec_helper'
 
 RSpec.describe JSON::SchemaBuilder::Schema, type: :unit do
-  let(:schema){ described_class.new a: 1, b: { c: 3 }, array: [123, { foo: 1, bar: { baz: 0 }}] }
-  let(:other){ described_class.new a: 2, "b" => { d: 4 }, array: [456, { foo: 2, bar: { qux: 1 }}] }
+  let(:schema) do
+    described_class.new a: 1, b: { c: 3 }, array: [123, { foo: 1, bar: { baz: 0 }}], anyOf: [
+      { type: "null" },
+      { type: "string" },
+      {
+        type: "object",
+        properties: {
+          one: { type: "string" },
+          two: { type: "string" }
+        }
+      }
+    ]
+  end
+
+  let(:other) do
+    described_class.new a: 2, "b" => { d: 4 }, array: [456, { foo: 2, bar: { qux: 1 }}], anyOf: [
+      { type: "null" },
+      {
+        type: "object",
+        properties: {
+          two: { type: "string" },
+          three: { type: "string" }
+        }
+      }
+    ]
+  end
+
   let(:merged) do
     {
       "a" => 2,
@@ -21,6 +46,18 @@ RSpec.describe JSON::SchemaBuilder::Schema, type: :unit do
           "foo" => 2,
           "bar" => {
             "qux" => 1
+          }
+        }
+      ],
+      "anyOf" => [
+        { "type" => "null" },
+        { "type" => "string" },
+        {
+          "type" => "object",
+          "properties" => {
+            "one" => { "type" => "string" },
+            "two" => { "type" => "string" },
+            "three" => { "type" => "string" }
           }
         }
       ]
