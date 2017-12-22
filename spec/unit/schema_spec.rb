@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 RSpec.describe JSON::SchemaBuilder::Schema, type: :unit do
-  let(:schema) do
+  subject(:schema) do
     described_class.new a: 1, b: { c: 3 }, array: [123, { foo: 1, bar: { baz: 0 }}], anyOf: [
       { type: "null" },
       { type: "string" },
@@ -91,6 +91,16 @@ RSpec.describe JSON::SchemaBuilder::Schema, type: :unit do
 
     it 'should not modify the merging schema' do
       expect{ schema.merge! other }.to_not change { other.data }
+    end
+  end
+
+  %w(validate validate! fully_validate).each do |validator|
+    describe "##{ validator }" do
+      it "should #{ validator }" do
+        expect(JSON::Validator).to receive(validator)
+          .with schema.as_json, { }, opts: true
+        schema.send validator, { }, opts: true
+      end
     end
   end
 end

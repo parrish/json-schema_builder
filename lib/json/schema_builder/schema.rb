@@ -1,11 +1,19 @@
+require_relative "validation"
+
 module JSON
   module SchemaBuilder
     class Schema
+      include Validation
+
       attr_accessor :data
       delegate :[], :[]=, :to_h, :as_json, to: :data
 
       def initialize(hash = {})
         @data = hash.with_indifferent_access
+      end
+
+      def options
+        JSON::SchemaBuilder.options.to_h
       end
 
       def merge(schema)
