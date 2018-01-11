@@ -2,6 +2,7 @@
 
 source "https://rubygems.org"
 
-gem "activesupport", "~> 4.2"
+gem "json-schema", "~> 2.7.0"
+gem "activesupport", "~> 5.1"
 
 gemspec path: "../"
