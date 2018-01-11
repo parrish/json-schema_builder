@@ -2,65 +2,148 @@ require 'spec_helper'
 
 RSpec.describe JSON::SchemaBuilder::Schema, type: :unit do
   subject(:schema) do
-    described_class.new a: 1, b: { c: 3 }, array: [123, { foo: 1, bar: { baz: 0 }}], anyOf: [
-      { type: "null" },
-      { type: "string" },
-      {
-        type: "object",
-        properties: {
-          one: { type: "string" },
-          two: { type: "string" }
-        }
-      }
-    ]
+    Class.new do
+      include JSON::SchemaBuilder
+
+      def example
+        object do
+          integer :a
+
+          object :b do
+            integer :c
+          end
+
+          array :array do
+            items do
+              object do
+                integer :foo
+
+                object :bar do
+                  integer :baz
+                end
+              end
+            end
+          end
+
+          entity :anything do
+            any_of [
+              null,
+              string,
+              object {
+                string :one
+                string :two
+              }
+            ]
+          end
+        end
+      end
+    end.new.example.schema
   end
 
   let(:other) do
-    described_class.new a: 2, "b" => { d: 4 }, array: [456, { foo: 2, bar: { qux: 1 }}], anyOf: [
-      { type: "null" },
-      {
-        type: "object",
-        properties: {
-          two: { type: "string" },
-          three: { type: "string" }
-        }
-      }
-    ]
+    Class.new do
+      include JSON::SchemaBuilder
+
+      def example
+        object do
+          integer :a2
+
+          object :b do
+            integer :d
+          end
+
+          array :array do
+            items do
+              object do
+                object :bar do
+                  integer :qux
+                end
+              end
+            end
+          end
+
+          entity :anything do
+            any_of [
+              null,
+              object {
+                string :two
+                string :three
+              }
+            ]
+          end
+        end
+      end
+    end.new.example.schema
   end
 
   let(:merged) do
     {
-      "a" => 2,
-      "b" => {
-        "c" => 3,
-        "d" => 4
-      },
-      "array" => [
-        123, {
-          "foo" => 1,
-          "bar" => {
-            "baz" => 0,
-          }
+      "type" => :object,
+      "properties" => {
+        "a" => {
+          "type" => "integer"
         },
-        456, {
-          "foo" => 2,
-          "bar" => {
-            "qux" => 1
-          }
-        }
-      ],
-      "anyOf" => [
-        { "type" => "null" },
-        { "type" => "string" },
-        {
+        "a2" => {
+          "type" => "integer"
+        },
+        "b" => {
           "type" => "object",
           "properties" => {
-            "one" => { "type" => "string" },
-            "two" => { "type" => "string" },
-            "three" => { "type" => "string" }
+            "c" => {
+              "type" => "integer"
+            },
+            "d" => {
+              "type" => "integer"
+            }
           }
+        },
+        "array" => {
+          "type" => "array",
+          "items" => {
+            "type" => "object",
+            "properties" => {
+              "foo" => {
+                "type" => "integer",
+              },
+              "bar" => {
+                "type" => "object",
+                "properties" => {
+                  "baz" => {
+                    "type" => "integer"
+                  },
+                  "qux" => {
+                    "type" => "integer"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "anything" => {
+          "anyOf" => [
+            {
+              "type" => "null"
+            },
+            {
+              "type" => "string"
+            },
+            {
+              "type" => "object",
+              "properties" => {
+                "one" => {
+                  "type" => "string"
+                },
+                "two" => {
+                  "type" => "string"
+                },
+                "three" => {
+                  "type" => "string"
+                }
+              }
+            }
+          ]
         }
-      ]
+      }
     }
   end
 
@@ -100,6 +183,72 @@ RSpec.describe JSON::SchemaBuilder::Schema, type: :unit do
         expect(JSON::Validator).to receive(validator)
           .with schema.as_json, { }, opts: true
         schema.send validator, { }, opts: true
+      end
+    end
+  end
+
+  describe "#fragments" do
+    context "with an unmerged schema" do
+      subject(:fragments) { schema.fragments }
+      its(:keys) do
+        is_expected.to match_array %w(
+          #/
+          #/a
+          #/b
+          #/b/c
+          #/array
+          #/array/foo
+          #/array/bar
+          #/array/bar/baz
+          #/anything
+          #/anything/one
+          #/anything/two
+        )
+      end
+
+      it "stores the schema by fragment" do
+        expect(fragments["#/"].first.as_json).to eq schema.as_json
+      end
+
+      it "structures the fragments correctly" do
+        fragments.values.each do |entities|
+          expect(entities.length).to eq 1
+          expect(entities.first).to be_a JSON::SchemaBuilder::Entity
+        end
+      end
+    end
+
+    context "with a merged schema" do
+      subject(:fragments) { schema.merge(other).fragments }
+      its(:keys) do
+        is_expected.to match_array %w(
+          #/
+          #/a
+          #/a2
+          #/b
+          #/b/c
+          #/b/d
+          #/array
+          #/array/foo
+          #/array/bar
+          #/array/bar/baz
+          #/array/bar/qux
+          #/anything
+          #/anything/one
+          #/anything/two
+          #/anything/three
+        )
+      end
+
+      it "stores the schema by fragment" do
+        expect(fragments["#/"].first.as_json).to eq schema.as_json
+      end
+
+      it "structures the fragments correctly" do
+        fragments.values.each do |entities|
+          expect(entities.length).to eq(1).or eq(2)
+          expect(entities).to all be_a JSON::SchemaBuilder::Entity
+        end
       end
     end
   end

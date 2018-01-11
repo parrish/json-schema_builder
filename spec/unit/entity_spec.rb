@@ -92,7 +92,7 @@ RSpec.describe JSON::SchemaBuilder::Entity, type: :unit do
         subject.required = 'name'
       }.to change{
         parent.required
-      }.to ['name']
+      }.from([]).to ['name']
     end
   end
 

@@ -12,7 +12,7 @@ module JSON
       include Validation
       include Helpers
       class_attribute :registered_type
-      attr_accessor :name, :parent, :children, :options
+      attr_accessor :name, :parent, :children, :options, :fragment, :fragments
 
       attribute :title
       attribute :description
@@ -30,19 +30,30 @@ module JSON
       def initialize(name, opts = { }, &block)
         @name = name
         @children = []
+        @fragments = {}
+        @fragments["#/"] = self if opts[:root]
         self.type = self.class.registered_type
         initialize_parent_with opts
         initialize_with opts
         eval_block &block
       end
 
+      def add_fragment(child)
+        @fragments[child.fragment] = child
+        @parent.add_fragment(child) if @parent
+      end
+
       def schema
-        @schema ||= Schema.new
+        @schema ||= Schema.new({}, self)
+      end
+
+      def required
+        schema["required"] || []
       end
 
       def required=(*values)
-        @parent.required ||= []
-        @parent.required << @name
+        @parent.schema["required"] ||= []
+        @parent.schema["required"] << @name
       end
 
       def merge_children!
@@ -75,7 +86,13 @@ module JSON
 
       def initialize_parent_with(opts)
         @parent = opts.delete :parent
-        @parent.children << self if @parent
+        if parent
+          @fragment = [@parent.fragment, name].compact.join("/").gsub(%r(//), "/")
+          parent.children << self
+          parent.add_fragment(self)
+        else
+          @fragment = "#/"
+        end
       end
 
       def initialize_with(opts)

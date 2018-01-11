@@ -18,6 +18,7 @@ module JSON
       protected
 
       def items_entity(opts, &block)
+        opts[:parent] = self
         if opts[:type]
           send opts.delete(:type), opts, &block
         else

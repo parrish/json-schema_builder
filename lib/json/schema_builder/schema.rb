@@ -5,23 +5,35 @@ module JSON
     class Schema
       include Validation
 
-      attr_accessor :data
+      attr_accessor :data, :entities
       delegate :[], :[]=, :to_h, :as_json, to: :data
 
-      def initialize(hash = {})
+      def initialize(hash = {}, entities = nil)
         @data = hash.with_indifferent_access
+        @entities = Array(entities)
       end
 
       def options
         JSON::SchemaBuilder.options.to_h
       end
 
+      def fragments
+        fragment_map = Hash.new { |hash, key| hash[key] = [] }
+        entities.map(&:fragments).each do |entity_fragments|
+          entity_fragments.each do |fragment, entity|
+            fragment_map[fragment] << entity
+          end
+        end
+        fragment_map
+      end
+
       def merge(schema)
-        self.class.new _deep_merge(data, schema.data)
+        self.class.new _deep_merge(data, schema.data), entities + schema.entities
       end
 
       def merge!(schema)
         @data = _deep_merge(data, schema.data)
+        @entities += schema.entities
         self
       end
 
