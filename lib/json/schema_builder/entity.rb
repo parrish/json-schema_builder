@@ -12,7 +12,7 @@ module JSON
       include Validation
       include Helpers
       class_attribute :registered_type
-      attr_accessor :name, :parent, :children, :options, :fragment, :fragments
+      attr_accessor :name, :parent, :children, :options, :fragment, :fragments, :error
 
       attribute :title
       attribute :description
