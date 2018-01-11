@@ -21,7 +21,7 @@ module JSON
         fragment_map = Hash.new { |hash, key| hash[key] = [] }
         entities.map(&:fragments).each do |entity_fragments|
           entity_fragments.each do |fragment, entity|
-            fragment_map[fragment] << entity
+            fragment_map[fragment] += entity
           end
         end
         fragment_map

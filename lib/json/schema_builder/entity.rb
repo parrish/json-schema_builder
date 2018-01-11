@@ -30,8 +30,8 @@ module JSON
       def initialize(name, opts = { }, &block)
         @name = name
         @children = []
-        @fragments = {}
-        @fragments["#/"] = self if opts[:root]
+        @fragments = Hash.new { |hash, key| hash[key] = ::Array.new }
+        @fragments["#/"] << self if opts[:root]
         self.type = self.class.registered_type
         initialize_parent_with opts
         initialize_with opts
@@ -39,7 +39,7 @@ module JSON
       end
 
       def add_fragment(child)
-        @fragments[child.fragment] = child
+        @fragments[child.fragment] << child
         @parent.add_fragment(child) if @parent
       end
 

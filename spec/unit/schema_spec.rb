@@ -211,10 +211,19 @@ RSpec.describe JSON::SchemaBuilder::Schema, type: :unit do
       end
 
       it "structures the fragments correctly" do
-        fragments.values.each do |entities|
-          expect(entities.length).to eq 1
-          expect(entities.first).to be_a JSON::SchemaBuilder::Entity
-        end
+        expect(fragments.values.flatten).to all be_a JSON::SchemaBuilder::Entity
+        expect(fragments["#/"].length).to eq 1
+        expect(fragments["#/"].length).to eq 1
+        expect(fragments["#/a"].length).to eq 1
+        expect(fragments["#/b"].length).to eq 1
+        expect(fragments["#/b/c"].length).to eq 1
+        expect(fragments["#/array"].length).to eq 3
+        expect(fragments["#/array/foo"].length).to eq 1
+        expect(fragments["#/array/bar"].length).to eq 1
+        expect(fragments["#/array/bar/baz"].length).to eq 1
+        expect(fragments["#/anything"].length).to eq 4
+        expect(fragments["#/anything/one"].length).to eq 1
+        expect(fragments["#/anything/two"].length).to eq 1
       end
     end
 
@@ -245,10 +254,22 @@ RSpec.describe JSON::SchemaBuilder::Schema, type: :unit do
       end
 
       it "structures the fragments correctly" do
-        fragments.values.each do |entities|
-          expect(entities.length).to eq(1).or eq(2)
-          expect(entities).to all be_a JSON::SchemaBuilder::Entity
-        end
+        expect(fragments.values.flatten).to all be_a JSON::SchemaBuilder::Entity
+        expect(fragments["#/"].length).to eq 2
+        expect(fragments["#/a"].length).to eq 1
+        expect(fragments["#/a2"].length).to eq 1
+        expect(fragments["#/b"].length).to eq 2
+        expect(fragments["#/b/c"].length).to eq 1
+        expect(fragments["#/b/d"].length).to eq 1
+        expect(fragments["#/array"].length).to eq 6
+        expect(fragments["#/array/foo"].length).to eq 1
+        expect(fragments["#/array/bar"].length).to eq 2
+        expect(fragments["#/array/bar/baz"].length).to eq 1
+        expect(fragments["#/array/bar/qux"].length).to eq 1
+        expect(fragments["#/anything"].length).to eq 7
+        expect(fragments["#/anything/one"].length).to eq 1
+        expect(fragments["#/anything/two"].length).to eq 2
+        expect(fragments["#/anything/three"].length).to eq 1
       end
     end
   end
