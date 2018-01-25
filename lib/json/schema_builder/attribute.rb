@@ -25,11 +25,14 @@ module JSON
 
       protected
 
-      def _array_attr(attr, values)
+      def _array_attr(attr, values = [])
         if values.empty?
-          self.schema[attr]
+          self.schema[attr] || []
         else
-          self.schema[attr] = values
+          self.schema[attr] ||= []
+          self.schema[attr] += values
+          self.schema[attr].uniq!
+          self.schema[attr]
         end
       end
 

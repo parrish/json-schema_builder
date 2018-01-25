@@ -36,6 +36,7 @@ module JSON
         initialize_parent_with opts
         initialize_with opts
         eval_block &block
+        extract_types
       end
 
       def add_fragment(child)
@@ -84,6 +85,16 @@ module JSON
 
       protected
 
+      def extract_types
+        any_of(null) if @nullable
+        if any_of.present?
+          everything_else = schema.data.reject { |k, v| k == "anyOf" }
+          return unless everything_else.present?
+          schema.data.select! { |k, v| k == "anyOf" }
+          schema.data["anyOf"].unshift everything_else
+        end
+      end
+
       def initialize_parent_with(opts)
         @parent = opts.delete :parent
         if parent
@@ -96,6 +107,7 @@ module JSON
       end
 
       def initialize_with(opts)
+        @nullable = opts.delete :null
         @options = opts.delete(:root).class.options.to_h if opts[:root]
         opts.each_pair do |key, value|
           next if value.nil?

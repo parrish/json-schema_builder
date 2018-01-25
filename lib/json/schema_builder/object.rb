@@ -11,12 +11,16 @@ module JSON
       attribute :additional_properties
       attribute :pattern_properties
 
-      def initialize(name, opts = { }, &block)
+      def initialize_children
         self.properties = { }
-        super
-        children.each do |child|
+        children.select(&:name).each do |child|
           self.properties[child.name] = child.as_json
         end
+      end
+
+      def extract_types
+        initialize_children
+        super
       end
 
       def required(*values)

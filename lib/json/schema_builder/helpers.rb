@@ -33,6 +33,10 @@ module JSON
           any_of list
         end
       end
+
+      def empty_string(name = nil, opts = { }, &block)
+        string name, opts.merge(max_length: 0), &block
+      end
     end
   end
 end
