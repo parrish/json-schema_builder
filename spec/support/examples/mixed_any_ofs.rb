@@ -10,6 +10,10 @@ module Examples
           string :test
         end
 
+        object_or_array :mixed_type, any_of: [string, null], null: true do
+          string :property
+        end
+
         entity :flexible, any_of: [string(min_length: 100), empty_string, integer], null: true do
           any_of [
             an_object(self),

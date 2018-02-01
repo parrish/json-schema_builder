@@ -26,6 +26,35 @@ RSpec.describe Examples::MixedAnyOfs, type: :integration do
               { type: "null" }
             ]
           },
+          mixed_type: {
+            anyOf: [
+              {
+                type: "object",
+                properties: {
+                  property: {
+                    type: "string"
+                  }
+                }
+              },
+              {
+                type: "array",
+                items: {
+                  type: "object",
+                  properties: {
+                    property: {
+                      type: "string"
+                    }
+                  }
+                }
+              },
+              {
+                type: "string",
+              },
+              {
+                type: "null"
+              }
+            ]
+          },
           flexible: {
             anyOf: [
               { type: "string", minLength: 100 },

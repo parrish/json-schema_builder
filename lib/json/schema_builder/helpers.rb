@@ -18,6 +18,7 @@ module JSON
         opts = args.extract_options!
         name = args.shift
         nullable = opts.delete :null
+        any_ofs = opts.delete :any_of
 
         entity name do
           list = [
@@ -29,7 +30,8 @@ module JSON
             }
           ]
 
-          list << null if nullable
+          list |= any_ofs if any_ofs
+          list |= [null] if nullable && list.none? { |item| item.is_a?(Null) }
           any_of list
         end
       end
