@@ -15,6 +15,24 @@ RSpec.describe JSON::SchemaBuilder::Entity, type: :unit do
   it{ is_expected.to define_attribute :ref }
   it{ is_expected.to define_attribute :definitions }
 
+  describe ".disable_attributes!" do
+    let(:disabled_attributes) { [:default, :ref, :definitions] }
+
+    around(:each) do |example|
+      described_class.disable_attributes! *disabled_attributes
+      example.call
+      disabled_attributes.each { |attr| described_class.attribute(attr) }
+    end
+
+    it "should remove the attribute methods" do
+      entity = described_class.new "test"
+      disabled_attributes.each do |attr|
+        expect(entity).to_not respond_to(attr)
+        expect(entity).to_not respond_to("#{attr}=")
+      end
+    end
+  end
+
   describe '.attribute' do
     include_context 'an entity'
 

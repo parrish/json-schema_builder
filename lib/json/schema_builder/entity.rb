@@ -27,6 +27,13 @@ module JSON
       attribute :ref, as: :$ref
       attribute :definitions
 
+      def self.disable_attributes!(*attributes)
+        attributes.each do |attr|
+          undef_method attr rescue NameError
+          undef_method "#{attr}=" rescue NameError
+        end
+      end
+
       def initialize(name, opts = { }, &block)
         @name = name
         @children = []
