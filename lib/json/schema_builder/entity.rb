@@ -48,7 +48,13 @@ module JSON
 
       def add_fragment(child)
         @fragments[child.fragment] << child
-        @parent.add_fragment(child) if @parent
+        parent.add_fragment(child) if @parent
+      end
+
+      def reset_fragment
+        @fragment = [@parent.fragment, name].compact.join("/").gsub(%r(//), "/")
+        root._reset_fragments
+        root.fragments["#/"] << root
       end
 
       def schema
@@ -91,6 +97,25 @@ module JSON
       end
 
       protected
+
+      def root
+        return @root if @root
+        node = self
+        node = node.parent while node.parent
+        @root = node
+      end
+
+      def _reset_fragments
+        @fragments = Hash.new { |hash, key| hash[key] = ::Array.new }
+        @fragment = if parent
+          [@parent.fragment, name].compact.join("/").gsub(%r(//), "/")
+        else
+          "#/"
+        end
+
+        children.each { |child| child._reset_fragments }
+        parent.add_fragment(self) if parent
+      end
 
       def extract_types
         any_of(null) if @nullable

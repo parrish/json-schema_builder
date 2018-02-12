@@ -158,4 +158,27 @@ RSpec.describe JSON::SchemaBuilder::Entity, type: :unit do
       subject.as_json
     end
   end
+
+  describe "array attributes" do
+    let(:klass) do
+      Class.new do
+        include JSON::SchemaBuilder
+
+        def example
+          object do
+            object :parent_name do
+              any_of [
+                string(:name)
+              ]
+            end
+          end
+        end
+      end
+    end
+    subject(:schema){ klass.new }
+
+    it "prevents elements from being named" do
+      expect(schema.example.fragments.keys).to match_array(%w(#/ #/parent_name))
+    end
+  end
 end

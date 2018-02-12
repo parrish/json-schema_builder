@@ -30,6 +30,7 @@ module JSON
           self.schema[attr] || []
         else
           self.schema[attr] ||= []
+          _rename_array_values!(values)
           self.schema[attr] += values
           self.schema[attr].uniq!
           self.schema[attr]
@@ -41,6 +42,15 @@ module JSON
           self.schema[attr]
         else
           self.schema[attr] = value
+        end
+      end
+
+      def _rename_array_values!(values)
+        values.each do |value|
+          if value.class < Entity && value.name
+            value.name = nil
+            value.reset_fragment
+          end
         end
       end
     end

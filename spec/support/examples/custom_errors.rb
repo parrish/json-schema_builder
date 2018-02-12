@@ -38,7 +38,7 @@ module Examples
       object do
         entity :user do
           any_of [
-            object { object(:settings) { string :name, error: "Nested" } },
+            object(:ignored) { object(:settings) { string :name, error: "Nested" } },
             null
           ]
         end
