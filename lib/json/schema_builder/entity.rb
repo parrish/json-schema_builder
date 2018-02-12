@@ -80,6 +80,10 @@ module JSON
         schema.as_json
       end
 
+      def inspect
+        "#<#{self.class.name}:#{object_id} @schema=#{schema.as_json}>"
+      end
+
       def respond_to?(method_name, include_all = false)
         if @parent_context
           @parent_context.respond_to? method_name, include_all
