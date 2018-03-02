@@ -54,6 +54,13 @@ module JSON
       def reinitialize
       end
 
+      def extend(child_name, &block)
+        children.find { |c| c.name == child_name.to_sym }.tap do |child|
+          raise "Property #{child_name} does not exist" unless child
+          child.eval_block(&block) if block_given?
+        end
+      end
+
       def add_fragment(child)
         @fragments[child.fragment] << child
         parent.add_fragment(child) if @parent

@@ -181,4 +181,52 @@ RSpec.describe JSON::SchemaBuilder::Entity, type: :unit do
       expect(schema.example.fragments.keys).to match_array(%w(#/ #/parent_name))
     end
   end
+
+  describe "#extend" do
+    let(:object) do
+      obj = JSON::SchemaBuilder::Object.new(nil) do
+        string :test
+        object :sub_object do
+          string :a_string
+        end
+      end
+
+      obj.extend(:sub_object) do
+        string :another_string
+        number :a_number, required: true
+      end
+
+      obj
+    end
+    let(:schema) { object.schema }
+    let(:properties) { schema[:properties] }
+    let(:sub_object) { properties[:sub_object] }
+    let(:sub_properties) { sub_object[:properties] }
+
+    it "does not remove properties" do
+      expect(properties[:test]).to eq "type" => "string"
+      expect(sub_object).to include "type" => "object"
+      expect(sub_properties).to include "a_string" => {"type" => "string"}
+    end
+
+    it "adds new properties" do
+      expect(sub_properties).to include "another_string" => {"type" => "string"}
+      expect(sub_properties).to include "a_number" => {"type" => "number"}
+      expect(sub_object[:required]).to match_array ["a_number"]
+    end
+
+    it "raises on unknown properties" do
+      expect do
+        object.extend(:foo) do
+          raise "doesn't work"
+        end
+      end.to raise_error "Property foo does not exist"
+    end
+
+    it "returns the child" do
+      child = object.extend(:sub_object)
+      expect(child).to be_a(JSON::SchemaBuilder::Object)
+      expect(child.name).to eq(:sub_object)
+    end
+  end
 end
