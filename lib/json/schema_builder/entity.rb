@@ -71,6 +71,7 @@ module JSON
       end
 
       def merge_children!
+        return if any_of.present?
         children.each do |child|
           schema.merge! child.schema
         end
