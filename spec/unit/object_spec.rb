@@ -16,13 +16,17 @@ RSpec.describe JSON::SchemaBuilder::Object, type: :unit do
       described_class.new 'name' do
         string :test1
         string :test2
+        string /^_/
+        string /^\./
       end
     end
 
     let(:string){ kind_of JSON::SchemaBuilder::String }
     its(:children){ is_expected.to include string }
-    its('children.length'){ is_expected.to eql 2 }
+    its('children.length'){ is_expected.to eql 4 }
     its('properties'){ is_expected.to include test1: { 'type' => 'string' } }
     its('properties'){ is_expected.to include test2: { 'type' => 'string' } }
+    its('pattern_properties'){ is_expected.to include '^_' => { 'type' => 'string' } }
+    its('pattern_properties'){ is_expected.to include '^\.' => { 'type' => 'string' } }
   end
 end

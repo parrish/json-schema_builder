@@ -13,8 +13,15 @@ module JSON
 
       def initialize_children
         self.properties = { }
+
         children.select(&:name).each do |child|
-          self.properties[child.name] = child.as_json
+          case child.name
+          when Regexp
+            self.pattern_properties ||= { }
+            self.pattern_properties[child.name.source] = child.as_json
+          else
+            self.properties[child.name] = child.as_json
+          end
         end
       end
 
