@@ -44,6 +44,14 @@ module JSON
         initialize_with opts
         eval_block &block
         extract_types
+        @initialized = true
+      end
+
+      def initialized?
+        !!@initialized
+      end
+
+      def reinitialize
       end
 
       def add_fragment(child)

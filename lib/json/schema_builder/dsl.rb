@@ -8,7 +8,9 @@ module JSON
         opts = args.extract_options!
         klass, name = klass_and_name_from args
         set_context_for opts
-        klass.new name, opts, &block
+        klass.new(name, opts, &block).tap do
+          reinitialize if is_a?(Entity)
+        end
       end
 
       protected

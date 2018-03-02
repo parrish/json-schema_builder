@@ -30,6 +30,11 @@ module JSON
         super
       end
 
+      def reinitialize
+        return unless initialized?
+        extract_types
+      end
+
       def required(*values)
         case values
         when []

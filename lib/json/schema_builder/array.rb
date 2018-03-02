@@ -13,6 +13,7 @@ module JSON
         opts = args.extract_options!
         schema[:items] = args.first
         schema[:items] ||= items_entity(opts, &block).as_json
+        parent.reinitialize if parent
       end
 
       protected

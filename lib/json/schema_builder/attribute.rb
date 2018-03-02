@@ -7,11 +7,14 @@ module JSON
         def attribute(name, as: nil, array: false)
           attr = as || snakeize(name)
           define_method name do |*values|
-            if array
+            result = if array
               _array_attr attr, values.flatten
             else
               _attr attr, values.first
             end
+
+            parent.reinitialize if parent
+            result
           end
           alias_method "#{ name }=", name
         end
