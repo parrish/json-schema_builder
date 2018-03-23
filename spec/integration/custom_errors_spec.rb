@@ -19,6 +19,29 @@ RSpec.describe Examples::CustomErrors, type: :integration do
     expect(errors).to include hash_including(message: %q(#/settings requires properties ["name"]))
   end
 
+  context "with property-specific required errors" do
+    let(:schema) { klass.example3 }
+
+    it "customizes required object errors" do
+      errors = schema.fully_validate({ }, customize_errors: true)
+      expect(errors.length).to eq(1)
+      expect(errors).to include hash_including(message: "Settings is required")
+    end
+
+    it "customizes required object errors" do
+      errors = schema.fully_validate({ settings: {} }, customize_errors: true)
+      expect(errors.length).to eq(2)
+      expect(errors).to include hash_including(message: "Name is required")
+      expect(errors).to include hash_including(message: "Other is required")
+    end
+
+    it "customizes required object errors" do
+      errors = schema.fully_validate({ settings: { name: "name" } }, customize_errors: true)
+      expect(errors.length).to eq(1)
+      expect(errors).to include hash_including(message: "Other is required")
+    end
+  end
+
   it "merges error handlers" do
     schema = klass.example.schema.merge(klass.example2.schema)
     errors = schema.fully_validate({ settings: { other: 123 } }, customize_errors: true)

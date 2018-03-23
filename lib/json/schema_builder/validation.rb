@@ -27,7 +27,7 @@ module JSON
 
       def _customize_errors(error_objects)
         _flatten_errors(error_objects).each do |error|
-          entities = Array(fragments[error[:fragment]]).select(&:error)
+          entities = _entities_handling(error)
           entities.each do |entity|
             handler = entity.error
             case handler
@@ -46,6 +46,16 @@ module JSON
           sub_errors = sub_errors.values.flatten if sub_errors.is_a?(Hash)
           [error_object, _flatten_errors(sub_errors)]
         end.flatten
+      end
+
+      def _entities_handling(error)
+        entities = Array(fragments[error[:fragment]]).select(&:error)
+        if error[:failed_attribute] == "Required"
+          property = error[:message].match(/required property of '([^']+?)'/)[1]
+          property_fragment = "#{error[:fragment]}/#{property}".gsub(%r(//), "/")
+          entities |= Array(fragments[property_fragment]).select(&:error)
+        end
+        entities
       end
     end
   end
