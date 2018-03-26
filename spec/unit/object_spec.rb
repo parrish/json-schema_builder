@@ -29,4 +29,16 @@ RSpec.describe JSON::SchemaBuilder::Object, type: :unit do
     its('pattern_properties'){ is_expected.to include '^_' => { 'type' => 'string' } }
     its('pattern_properties'){ is_expected.to include '^\.' => { 'type' => 'string' } }
   end
+
+  describe "#required" do
+    subject do
+      described_class.new 'name' do
+        string :test1, required: true
+        string :test2, required: false
+        string :test2, required: nil
+      end
+    end
+
+    its(:required) { is_expected.to match_array([:test1]) }
+  end
 end

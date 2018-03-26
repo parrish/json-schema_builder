@@ -82,7 +82,7 @@ module JSON
 
       def required=(*values)
         @parent.schema["required"] ||= []
-        @parent.schema["required"] << @name
+        @parent.schema["required"] << @name if values.any?
       end
 
       def merge_children!
