@@ -17,6 +17,21 @@ RSpec.describe Examples::BuilderInitialization, type: :integration do
               }
             }
           },
+          target: {
+            anyOf: [
+              {
+                type: :object,
+                properties: {
+                  id: {
+                    type: :number
+                  }
+                }
+              },
+              {
+                type: :null
+              }
+            ]
+          },
           preferences: {
             anyOf: [
               {

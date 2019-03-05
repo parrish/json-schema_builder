@@ -6,9 +6,16 @@ module Examples
       obj = object
       obj.string :name
       settings_for(obj)
+      target_for(obj)
       preferences_for(obj)
       add_ids_to(obj)
       obj
+    end
+
+    def target_for(obj)
+      target = obj.object :target, null: true
+      target.number :id
+      target
     end
 
     def settings_for(obj)
