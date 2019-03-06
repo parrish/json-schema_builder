@@ -149,7 +149,7 @@ module JSON
 
         schema.data.keep_if { |k| k == "anyOf" }
         return any_of_options.unshift(everything_else) unless initial_object
-        initial_object.deep_merge! everything_else.as_json
+        initial_object.deep_merge! everything_else
       end
 
       def any_of_options
