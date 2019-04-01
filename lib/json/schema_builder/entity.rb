@@ -144,12 +144,13 @@ module JSON
 
       def build_any_of
         initial_object  = any_of_options.find { |opt| opt.as_json['type'] == 'object' }
-        everything_else = schema.data.reject { |k| k == "anyOf" }
+        everything_else = schema.data.except("anyOf")
         return unless everything_else.present?
 
         schema.data.keep_if { |k| k == "anyOf" }
         return any_of_options.unshift(everything_else) unless initial_object
         initial_object.deep_merge! everything_else
+        initial_object['properties'] = children.select { |c| c.name.presence }.map { |c| [c.name, c] }.to_h
       end
 
       def any_of_options
