@@ -43,6 +43,7 @@ module JSON
         initialize_parent_with opts
         initialize_with opts
         eval_block &block
+        any_of(null) if @nullable
         extract_types
         @initialized = true
       end
@@ -138,13 +139,22 @@ module JSON
       end
 
       def extract_types
-        any_of(null) if @nullable
-        if any_of.present?
-          everything_else = schema.data.reject { |k, v| k == "anyOf" }
-          return unless everything_else.present?
-          schema.data.select! { |k, v| k == "anyOf" }
-          schema.data["anyOf"].unshift everything_else
-        end
+        build_any_of if any_of.present?
+      end
+
+      def build_any_of
+        initial_object  = any_of_options.find { |opt| opt.as_json['type'] == 'object' }
+        everything_else = schema.data.except("anyOf")
+        return unless everything_else.present?
+
+        schema.data.keep_if { |k| k == "anyOf" }
+        return any_of_options.unshift(everything_else) unless initial_object
+        initial_object.deep_merge! everything_else
+        initial_object['properties'] = children.select { |c| c.name.presence }.map { |c| [c.name, c] }.to_h
+      end
+
+      def any_of_options
+        schema.data["anyOf"]
       end
 
       def initialize_parent_with(opts)

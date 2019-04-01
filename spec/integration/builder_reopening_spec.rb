@@ -20,6 +20,21 @@ RSpec.describe Examples::BuilderReopening, type: :integration do
               }
             }
           },
+          target: {
+            anyOf: [
+              {
+                type: :object,
+                properties: {
+                  id: {
+                    type: :number
+                  }
+                }
+              },
+              {
+                type: :null
+              }
+            ]
+          },
           preferences: {
             anyOf: [
               {

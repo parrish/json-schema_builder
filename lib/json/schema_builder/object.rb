@@ -23,6 +23,7 @@ module JSON
             self.properties[child.name] = child.as_json
           end
         end
+        build_any_of if @nullable
       end
 
       def extract_types
